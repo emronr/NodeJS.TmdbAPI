@@ -1,0 +1,15 @@
+{
+    "databaseConfig": {
+        "user": "sa",
+        "password": "160201070",
+        "database": "MovieDictDb",
+        "server": "DESKTOP-H7362TJ\\SQLEXPRESS",
+        "port": 1433,
+        "options": {
+            "cryptoCredentialsDetails": {
+                "minVersion": "TLSv1"
+            },
+            "trustServerCertificate": true
+        }
+    }
+}
