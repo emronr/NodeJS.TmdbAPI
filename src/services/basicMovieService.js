@@ -1,8 +1,8 @@
 var basicMovieRepository = require('../repository/basicMovieRepository.js');
 
 var basicMovieService = {
-    getAll: () => {
-        return basicMovieRepository.getAll();
+    getAll: async () => {
+        return await basicMovieRepository.getAll();
     },
     getById: async (id) => {
         return await basicMovieRepository.getById(id);

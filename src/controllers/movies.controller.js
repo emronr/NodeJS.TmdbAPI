@@ -1,20 +1,29 @@
 const basicMovieService = require('../services/basicMovieService');
-
+const tmdbService = require('../services/tmdbService');
 var moviesController = {
     getMovies: async (req, res) => {
         res.json(await basicMovieService.getAllPaging(req.query.size, req.query.currentPage));
     },
     getById: async (req, res) => {
-        // res.json([{
-        //     number: 15,
-        //     name: 'John',
-        //     gender: 'male'
-        //   }]);
-        //   console.log(typeof(JSON.stringify(basicMovieService.getById(req.params.id))));
+        console.log("getById");
         var movie = await basicMovieService.getById(req.params.id);
-        console.log("controller:",movie);
         res.json(movie);
-        // res.send("Hello World!");
+    },
+    getFromTMDB: async (req, res) => {
+        var movie = await tmdbService.getMovie(req.params.tmdbId);
+        res.json(movie);
+    },
+    // getPopularMoviesFromTMBDB: async (req, res) => {
+    //     var movies = await tmdbService.getPopularMovies(req.query.page);
+    //     res.json(movies);
+    // }
+    addNote: async (req,res) => {
+        console.log("addNote");
+        res.send("addNote");
+    },
+    suggestMovie: async (req,res) => {
+        console.log("suggestMovie");
+        res.send("suggestMovie");
     }
 }
 

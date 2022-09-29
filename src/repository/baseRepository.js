@@ -6,7 +6,7 @@ var baseRepository = {
         let response = await pool
             .request()
             .query(query);
-        return response;
+        return response.recordset;
     }
 }
 

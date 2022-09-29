@@ -13,7 +13,7 @@ const movies = require('./movies.route');
 
 const router = express.Router();
 
-router.use('/movies', movies);
+router.use('/api/v1/movies', movies);
 
 router.get('/', (req, res) => res.send('TMDB API Version1'));
 router.get('/health', (req, res) => {
@@ -24,5 +24,11 @@ router.get('/health', (req, res) => {
   };
   res.send(JSON.stringify(healthcheck));
 });
+
+
+const swaggerUi = require('swagger-ui-express');
+swaggerDocument = require('../swagger.json')
+
+router.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 module.exports = router;

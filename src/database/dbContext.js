@@ -3,26 +3,27 @@ var nconf = require('nconf');
 
 nconf.argv().env();
 
-nconf.file({ file: '../config.json' });
-var config2 = nconf.get("databaseConfig");
+nconf.file({ file: './config.json' });
+var config = nconf.get("databaseConfig");
 
-var config = {
-    user: 'sa',
-    password: '160201070',
-    database: 'MovieDictDb',
-    server: 'DESKTOP-H7362TJ\\SQLEXPRESS',
-    port: 1433,
-    options: {
-        cryptoCredentialsDetails: {
-            minVersion: 'TLSv1'
-        },
-        trustServerCertificate: true
-    }
-};
+// var config = {
+//     user: 'sa',
+//     password: '160201070',
+//     database: 'MovieDictDb',
+//     server: 'DESKTOP-H7362TJ\\SQLEXPRESS',
+//     port: 1433,
+//     options: {
+//         cryptoCredentialsDetails: {
+//             minVersion: 'TLSv1'
+//         },
+//         trustServerCertificate: true
+//     }
+// };
 
 
 // sql connection
 // console.log(config);
+
 const poolPromise = new sql.ConnectionPool(config)
     .connect()
     .then(pool => {

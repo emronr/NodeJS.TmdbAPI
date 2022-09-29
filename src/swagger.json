@@ -1,0 +1,549 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Swagger on ASP.NET Core",
+        "description": "TMDB API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Emre Onur",
+            "url": "https://github.com/emronr",
+            "email": "emre998@hotmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Diğer methodları kullanmadan oturum açınız. Giriş için Örnek Data'daki verileri kullanabilirsiniz.",
+                "description": "Örnek Data:\r\n\r\n    POST api/auth/login\r\n    {        \r\n      \"userName\": \"Test\",\r\n      \"password\": \"test\"\r\n    }",
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserModel"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserModel"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserModel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/v1/movies": {
+            "get": {
+                "tags": [
+                    "movies"
+                ],
+                "summary": "Popüler filmleri veritabanından listelemektir.",
+                "description": "### NOT ###\r\ncurrentPage ve size 0 dan küçükse;\r\n- page değeri 1,\r\n- size değeri 5 olarak alınmaktadır.",
+                "operationId": "movies",
+                "parameters": [
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "currentPage",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MainRequestModel"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/{id}": {
+            "get": {
+                "tags": [
+                    "movies"
+                ],
+                "summary": "id değerinden filmi getirir",
+                "description": "### NOT ###\r\n- id değeri girilen filmi veritabanından göstermektedir.",
+                "operationId": "movie",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MainRequestModel"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/tmdb/{tmdbId}": {
+            "get": {
+                "tags": [
+                    "movies"
+                ],
+                "summary": "tmdbId değerinden filmi getirir",
+                "description": "### NOT ###\r\n- tmdbId değeri girilen filmi TMDB API üzerinden göstermektedir.",
+                "operationId": "movie/tmdb",
+                "parameters": [
+                    {
+                        "name": "tmdbId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MainRequestModel"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/note": {
+            "post": {
+                "tags": [
+                    "movies"
+                ],
+                "summary": "Film için verdiğiniz oyu ve aldığınız notu kaydeder.",
+                "description": "### NOT ###\r\nÖrnek Data:\r\n\r\n    POST api/v1/movies/note\r\n    {        \r\n      \"MovieId\": 550,\r\n      \"Vote\": 8.9,\r\n      \"Note\": \"This movie awesome.\"\r\n    }",
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserNotes"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserNotes"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserNotes"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Your note has been created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserNotes"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Your note has been updated.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserNotes"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/suggest": {
+            "get": {
+                "tags": [
+                    "movies"
+                ],
+                "summary": "Girilen email adresine önerilen filmleri gönderir.",
+                "description": "### NOT ###\r\n5 puanın üzerinde oy verdiğiniz filmlerin sayısı:\r\n- 5'den büyükse ilk 5 tanesini,\r\n- 5'den küçükse ilk n tanesini çeker.\r\n\r\nArdından her biri için API'dan önerilenler sorgusunu çalıştırır, bu dataları oylarına göre sıralayarak 6 tanesini çeker.\r\nBu dört datadan 2'si asıl önerilen 4'ü yedek önerilendir.\r\nKullanıcının beğendiği filmlerin önerilenler listesindeki ilk 2 data eşleşir ise yedek 4 data arasında farklı bulana kadar sorgu atar.\r\nBu dataları formatlayıp email olarak girdiğiniz email adresine gönderir.",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SuggestedMovie"
+                                    }
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SuggestedMovie"
+                                    }
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SuggestedMovie"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UserModel": {
+                "required": [
+                    "password",
+                    "userName"
+                ],
+                "type": "object",
+                "properties": {
+                    "userName": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "GenreModel": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "genre": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "ProductionCompany": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "logo_path": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "origin_country": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "ProductionCountry": {
+                "type": "object",
+                "properties": {
+                    "iso_3166_1": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SpokenLanguage": {
+                "type": "object",
+                "properties": {
+                    "english_name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "iso_639_1": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "MainRequestModel": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "adult": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "backdrop_path": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "belong_to_collection": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "budget": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "genres": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GenreModel"
+                        },
+                        "nullable": true
+                    },
+                    "homepage": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "imdb_id": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "original_language": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "original_title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "overview": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "popularity": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "poster_path": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "production_companies": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductionCompany"
+                        },
+                        "nullable": true
+                    },
+                    "production_countries": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductionCountry"
+                        },
+                        "nullable": true
+                    },
+                    "release_date": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "revenue": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "runtime": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "spoken_languages": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SpokenLanguage"
+                        },
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "tagline": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "video": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "vote_average": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "vote_count": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "userVote": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "userNote": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserNotes": {
+                "required": [
+                    "movieId",
+                    "note",
+                    "vote"
+                ],
+                "type": "object",
+                "properties": {
+                    "movieId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "vote": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "note": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SuggestedMovie": {
+                "type": "object",
+                "properties": {
+                    "movieId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "movieName": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "overview": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "vote": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "releaseDate": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "apiKey",
+                "description": "JWT Authroziation header using the Bearer scheme. Example \"Authroization: Bearer {token}\"",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "Bearer": []
+        }
+    ]
+}
