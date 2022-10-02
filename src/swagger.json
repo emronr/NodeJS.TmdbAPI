@@ -12,43 +12,6 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/auth/login": {
-            "post": {
-                "tags": [
-                    "auth"
-                ],
-                "summary": "Diğer methodları kullanmadan oturum açınız. Giriş için Örnek Data'daki verileri kullanabilirsiniz.",
-                "description": "Örnek Data:\r\n\r\n    POST api/auth/login\r\n    {        \r\n      \"userName\": \"Test\",\r\n      \"password\": \"test\"\r\n    }",
-                "requestBody": {
-                    "description": "",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserModel"
-                            }
-                        },
-                        "text/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserModel"
-                            }
-                        },
-                        "application/*+json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserModel"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                }
-            }
-        },
         "/api/v1/movies": {
             "get": {
                 "tags": [
@@ -81,7 +44,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/MainRequestModel"
+                                    "$ref": "#/components/schemas/BasicMovie"
                                 }
                             }
                         }
@@ -107,7 +70,7 @@
                         "required": true,
                         "schema": {
                             "type": "integer",
-                            "format": "int32"
+                            "format": "string"
                         }
                     }
                 ],
@@ -117,7 +80,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/MainRequestModel"
+                                    "$ref": "#/components/schemas/BasicMovie"
                                 }
                             }
                         }
@@ -153,7 +116,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/MainRequestModel"
+                                    "$ref": "#/components/schemas/TmdbResponseModel"
                                 }
                             }
                         }
@@ -273,22 +236,93 @@
     },
     "components": {
         "schemas": {
-            "UserModel": {
-                "required": [
-                    "password",
-                    "userName"
-                ],
+            "MovieGenre": {
                 "type": "object",
                 "properties": {
-                    "userName": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    }
+                  "id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "tmdbId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "movieTmdbId": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
                 },
                 "additionalProperties": false
-            },
+              },
+            "BasicMovie": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "tmdbId": {
+                    "type": "integer",
+                    "format": "int32"
+                  },
+                  "adult": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "backdrop_path": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "movieGenres": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/MovieGenre"
+                    },
+                    "nullable": true
+                  },
+                  "original_language": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "original_title": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "overview": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "popularity": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "poster_path": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "release_date": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "title": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "video": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "vote_average": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "vote_count": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                },
+                "additionalProperties": false
+              },
             "GenreModel": {
                 "type": "object",
                 "properties": {
@@ -357,7 +391,7 @@
                 },
                 "additionalProperties": false
             },
-            "MainRequestModel": {
+            "TmdbResponseModel": {
                 "type": "object",
                 "properties": {
                     "id": {
