@@ -12,12 +12,17 @@ let tmdbService ={
     getPopularMovies : async (page) => {
         let pageParam = `&page=${page}`;
         let requestURL = url + "popular" + apiKeyParam + langParam  + pageParam;
-        // console.log(requestURL);
        
-        axios.get(requestURL).then(response => console.log(response))
-        .catch(err => console.log(err));
-        // var response = await axios.get(requestURL);
-        // return response.data;
+        // axios.get(requestURL).then(response => console.log(response))
+        // .catch(err => console.log(err));
+        var response = await axios.get(requestURL);
+        return response.data;
+    },
+    getRecommendationMovies : async (id) => {
+        let requestURL = url + id + "/recommendations" + apiKeyParam + langParam;
+        
+        var response = await axios.get(requestURL);
+        return response.data;
     }
 }
 

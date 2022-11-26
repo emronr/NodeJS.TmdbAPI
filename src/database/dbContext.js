@@ -1,24 +1,10 @@
 const sql = require('mssql');
-var nconf = require('nconf');
+const nconf = require('nconf');
 
 nconf.argv().env();
 
 nconf.file({ file: './config.json' });
-var config = nconf.get("databaseConfig");
-
-// var config = {
-//     user: 'sa',
-//     password: '160201070',
-//     database: 'MovieDictDb',
-//     server: 'DESKTOP-H7362TJ\\SQLEXPRESS',
-//     port: 1433,
-//     options: {
-//         cryptoCredentialsDetails: {
-//             minVersion: 'TLSv1'
-//         },
-//         trustServerCertificate: true
-//     }
-// };
+const config = nconf.get("databaseConfig");
 
 
 // sql connection

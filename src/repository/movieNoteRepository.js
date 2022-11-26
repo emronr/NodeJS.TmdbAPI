@@ -1,13 +1,18 @@
-const { create } = require('nconf');
 var baseRepository = require('./baseRepository');
 
 
 var movieNoteRepository = {
-    getAll : function(){
-        baseRepository.get('select * from MovieNotes');
+    getAll : async () => {
+        return await baseRepository.get('select * from MovieNotes');
     },
-    getById : function(id){
-        baseRepository.get('select * from MovieNotes where Id =' + id)
+    getById : async (id) => {
+        return await baseRepository.get('select * from MovieNotes where Id =' + id)
+    },
+    create: async (params) => {
+        return await baseRepository.get(`INSERT INTO MovieNotes(MovieId, Vote, Note) VALUES(${params.movieId},${params.vote}, '${params.note}')`);
+    },
+    topRatedMovies: async () => {
+        return await baseRepository.get(`select TOP 5 * from MovieNotes where Vote >= 5.0 order by Vote desc`);
     }
 }
 

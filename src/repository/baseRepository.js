@@ -6,7 +6,8 @@ var baseRepository = {
         let response = await pool
             .request()
             .query(query);
-        return response.recordset;
+        const data = response.recordset;
+        return data;
     }
 }
 

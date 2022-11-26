@@ -2,21 +2,23 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const port = 3000;
 
-var app = express();
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+const app = express();
+const urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 app.use(urlencodedParser);
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
 app.use(express.static('public'));
 
 //routes
-var routes = require('./routes/index.route');
+const routes = require('./routes/index.route');
 app.use(routes);
 
 //jobs
-var tmdbJob = require('./jobs/tmdbJob');
+// var tmdbJob = require('./jobs/tmdbJob');
 //tmdbJob.getMovies();
 
-var server = app.listen(port, () => {
+server = app.listen(port, () => {
     var host = server.address().address;
     var port = server.address().port;
 

@@ -12,6 +12,128 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Oturum başlatma işlemi",
+                "description": "Oturum başlatma işlemi",
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginModel"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginModel"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginModel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenModel"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/auth/token": {
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Token yenileme işlemi",
+                "description": "Token yenileme işlemi",
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefreshToken"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefreshToken"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefreshToken"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenModel"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/auth/logout/{token}": {
+            "delete": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Oturum sonlandırma işlemi",
+                "description": "Oturum sonlandırma işlemi",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenModel"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
         "/api/v1/movies": {
             "get": {
                 "tags": [
@@ -236,93 +358,143 @@
     },
     "components": {
         "schemas": {
+            "LoginModel": {
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "RefreshToken": {
+                "required": [
+                    "refreshToken"
+                ],
+                "type": "object",
+                "properties": {
+                    "refreshToken": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "TokenModel": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "displayName": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "accessToken": {
+                        "type": "string"
+                    },
+                    "refleshToken": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
             "MovieGenre": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "tmdbId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "movieTmdbId": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "tmdbId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "movieTmdbId": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
                 },
                 "additionalProperties": false
-              },
+            },
             "BasicMovie": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "tmdbId": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
-                  "adult": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "backdrop_path": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "movieGenres": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/MovieGenre"
+                    "id": {
+                        "type": "integer",
+                        "format": "int32"
                     },
-                    "nullable": true
-                  },
-                  "original_language": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "original_title": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "overview": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "popularity": {
-                    "type": "number",
-                    "format": "double"
-                  },
-                  "poster_path": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "release_date": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "title": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "video": {
-                    "type": "string",
-                    "nullable": true
-                  },
-                  "vote_average": {
-                    "type": "number",
-                    "format": "double"
-                  },
-                  "vote_count": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
+                    "tmdbId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "adult": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "backdrop_path": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "movieGenres": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MovieGenre"
+                        },
+                        "nullable": true
+                    },
+                    "original_language": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "original_title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "overview": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "popularity": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "poster_path": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "release_date": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "video": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "vote_average": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "vote_count": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
                 },
                 "additionalProperties": false
-              },
+            },
             "GenreModel": {
                 "type": "object",
                 "properties": {

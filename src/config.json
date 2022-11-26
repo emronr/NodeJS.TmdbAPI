@@ -2,7 +2,7 @@
     "databaseConfig": {
         "user": "sa",
         "password": "123456",
-        "database": "MovieDictDB",
+        "database": "MovieLibrary",
         "server": "localhost",
         "port": 1433,
         "options": {
@@ -12,5 +12,12 @@
             "trustServerCertificate": true
         },
         "parseJSON": true
+    },
+    "emailConfig": {
+        "service":"hotmail",
+        "auth": {
+            "user": "test.logan.9@hotmail.com",
+            "pass": "160201070s"
+        }
     }
 }

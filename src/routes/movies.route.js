@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-
-const moviesController = require('../controllers/movies.controller.js');
+const moviesController = require('../controllers/moviesController.js');
 
 //Veri tabanına sorgu atar
 router.route('/')
