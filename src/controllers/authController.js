@@ -1,33 +1,35 @@
 // authentication controller
 const authService = require('../services/authService');
-const jwt = require('jsonwebtoken');
-const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = require('../environments/environment');
-
-let refleshTokens = [];
 
 const authController = {
-    login: async (req, res) => {
+    login: async (req, res, next) => {
         const { email, password } = req.body;
-        const { user, accessToken, refreshToken, expiresIn } = await authService.login(email, password);
-        res.status(200).send(
-            {
-                userId: user.userId,
-                displayName: user.displayName,
-                accessToken: accessToken,
-                refreshToken: refreshToken,
-                expiresIn : expiresIn
-            });
+        await authService.login(email, password)
+            .then(response => res.status(200).send({
+                userId: response.user.userId,
+                displayName: response.user.displayName,
+                accessToken: response.accessToken,
+                refreshToken: response.refreshToken,
+                expiresIn: response.expiresIn
+            }))
+            .catch(err => next(err));
+
 
     },
-    token: async (req, res) => {
-        const refleshToken = req.body.token;
-        const { accessToken } = await authService.refreshToken(refleshToken);
-        res.status(200).send({ accessToken: accessToken });
+    token: async (req, res, next) => {
+        const refreshToken = req.body.refreshToken;
+        await authService.refreshToken(refreshToken)
+            .then(response =>
+                res.status(200).send({
+                    accessToken: response.accessToken,
+                    refreshToken: response.refreshToken
+                }))
+            .catch(err => next(err));
     },
-    logout: (req, res) => {
+    logout: (req, res, next) => {
         const { token } = req.params;
-        authService.logout(token);
-        res.status(204).send();
+        authService.logout(token)
+            .then(response => res.status(204).send());
     }
 }
 

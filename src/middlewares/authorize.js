@@ -1,6 +1,6 @@
 // this is a auhtorize middleware
 const jwt = require('jsonwebtoken');
-const { ACCESS_TOKEN_SECRET } = require('../../environments/environment');
+const { ACCESS_TOKEN_SECRET } = require('../environments/environment');
 
 const authorize = (req, res, next) => {
     const { authorization } = req.headers;

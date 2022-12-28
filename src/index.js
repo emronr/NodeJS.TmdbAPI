@@ -1,4 +1,6 @@
 const express = require('express');
+const errorHandler = require('./middlewares/errorHandler');
+
 const bodyParser = require('body-parser');
 const port = 3000;
 
@@ -15,8 +17,12 @@ const routes = require('./routes/index.route');
 app.use(routes);
 
 //jobs
-// var tmdbJob = require('./jobs/tmdbJob');
-//tmdbJob.getMovies();
+const tmdbJob = require('./jobs/tmdbJob');
+tmdbJob.syncPopularMovie();
+
+
+// global error handler
+app.use(errorHandler);
 
 server = app.listen(port, () => {
     var host = server.address().address;

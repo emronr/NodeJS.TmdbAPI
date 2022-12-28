@@ -2,35 +2,33 @@
 
 const movieService = require('../services/movieService');
 const tmdbService = require('../services/tmdbService');
-var nodemailer = require('nodemailer');
-
 
 var moviesController = {
-    getMovies: async (req, res) => {
-        res.json(await movieService.getAllPaging(req.query.size, req.query.currentPage));
+    getMovies: async (req, res, next) => {
+        await movieService.getAllPaging(req.query.size, req.query.currentPage)
+            .then(response => res.status(201).send(response))
+            .catch(error => next(error));
     },
-    getById: async (req, res) => {
-        var movie = await movieService.getById(req.params.id);
-        res.json(movie);
+    getById: async (req, res, next) => {
+        await movieService.getById(req.params.id)
+            .then(response => res.status(200).json(response))
+            .catch(error => next(error));
     },
-    getFromTMDB: async (req, res) => {
-        var movie = await tmdbService.getMovie(req.params.tmdbId);
-        res.json(movie);
+    getFromTMDB: async (req, res, next) => {
+        await tmdbService.getMovie(req.params.tmdbId)
+            .then(response => res.status(200).json(response))
+            .catch(error => next(error));
     },
-    // getPopularMoviesFromTMBDB: async (req, res) => {
-    //     var movies = await tmdbService.getPopularMovies(req.query.page);
-    //     res.json(movies);
-    // }
-    addNote: async (req,res) => {
-        let a = await movieService.addMovieNote(req.body.movieId, req.body.vote, req.body.note);
-        console.log(a);
-        res.send("Note added.");
+    addNote: async (req, res, next) => {
+        await movieService.addMovieNote(req.body.movieId, req.body.vote, req.body.note)
+            .then(res => res.status(201).send({ message: "Note added." }))
+            .catch(error => next(error));
     },
-    suggestMovie: async (req,res) => {
+    suggestMovie: async (req, res, next) => {
         const { email } = req.query;
-       
-        await movieService.suggestMovie(email);
-        res.send("suggestMovie");
+
+        await movieService.suggestMovie(email)
+            .then(response => res.status(200).send({ message: "Email is sent." }));
     }
 }
 

@@ -10,10 +10,11 @@ configuration yapıldı
 Authentication
 Email integration
 Suggest
+jobların db ye kaydetmesi
 
 Yapılacaklar
 ---------
 Add note için movie id validator
 session yönetimi ve token içindeki id kullanımı
-jobların db ye kaydetmesi
 authService içinde res send ler throw exception
+repository'ler kaldırılıp dbContext'e service katmanı üzerinden bağlanılacak.

@@ -4,8 +4,14 @@ const nconf = require('nconf');
 nconf.argv().env();
 
 nconf.file({ file: './config.json' });
-const emailConfig = nconf.get('emailConfig');
-
+// const emailConfig = nconf.get('emailConfig');
+const emailConfig = {
+    service: "hotmail",
+    auth: {
+        user: "test.logan.9@hotmail.com",
+        pass: "160201070s"
+    }
+};
 const emailService = {
     sendEmail: async ({email, subject, content}) => {
         const transporter = createTransport();

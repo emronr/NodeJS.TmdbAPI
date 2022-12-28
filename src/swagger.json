@@ -287,16 +287,6 @@
                             }
                         }
                     },
-                    "202": {
-                        "description": "Your note has been updated.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/UserNotes"
-                                }
-                            }
-                        }
-                    },
                     "401": {
                         "description": "Unauthorized"
                     }
@@ -402,7 +392,7 @@
                     "accessToken": {
                         "type": "string"
                     },
-                    "refleshToken": {
+                    "refreshToken": {
                         "type": "string"
                     }
                 },

@@ -2,17 +2,13 @@ const nodeSchedule = require('node-schedule');
 const tmdbService = require('../services/tmdbService');
 
 tmdbJob = {
-    getMovies: async () => {
-      nodeSchedule.scheduleJob('* * * * *', async () =>{
-            // console.log('Job has been triggered at: ', new Date.toLocaleTimeString());
-            console.log(await tmdbService.getMovie(436969));
-        });
-    },
-    getPopulerMovies: async () => {
-        nodeSchedule.scheduleJob('* * * * *', async () => {
-            for(let i = 0; i< 10; i++){
-                console.log(await tmdbService.getPopulerMovies(i));
-            }
+    syncPopularMovie: async () => {
+        nodeSchedule.scheduleJob('48 14 * * *', async () => {
+            // console.log('SyncMovieJob has been triggered at: ', new Date.toLocaleTimeString());
+            console.log("SyncMovieJob -> started")
+            await tmdbService.synchronizeMovie()
+                .then(response => console.log("SyncMovieJob -> finished"))
+                .catch(error => console.log("SyncMovieJob -> error:", error));
         });
     }
 }

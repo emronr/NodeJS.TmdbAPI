@@ -1,48 +1,59 @@
 const users = require('../mocks/users.mock');
 const jwt = require('jsonwebtoken');
+var errors = require('restify-errors');
+
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = require('../environments/environment');
 
-let refleshTokens = [];
+let refreshTokens = [];
 
 const authService = {
-    getUserByEmailAndPassword:  (email, password) => {
+    getUserByEmailAndPassword: (email, password) => {
         return users.find(user => user.email === email && user.password === password);
     },
     login: async (email, password) => {
-        if( !email || !password ) {
-            return res.status(400).json({ message: 'Email and password are required.' });
+        if (!email || !password) {
+            throw new errors.NotFoundError('Email and password are required.');
         }
         const user = authService.getUserByEmailAndPassword(email, password);
-        if( !user ) {
-            return res.status(401).json({ message: 'User not found!' });
+        if (!user) {
+            throw new errors.UnauthorizedError('User not found!');
         }
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
-        refleshTokens.push(refreshToken);
+        refreshTokens.push(refreshToken);
         return {
             user: user,
             accessToken: accessToken,
             refreshToken: refreshToken,
-            expiresIn: 3600
+            expiresIn: 3600,
         };
     },
-    refreshToken: async (refleshToken) => {
-        if( !refleshToken ) {
-            return res.status(401).send({ message: 'UNAUTHORIZE' });
+    refreshToken: async (refreshToken) => {
+        let accessToken = "";
+        let newRefreshToken = "";
+        if (!refreshToken) {
+            throw new errors.UnauthorizedError('UNAUTHORIZE!');
         }
-        if( !refleshTokens.includes(refleshToken) ) {
-            return res.status(403).send({ message: 'FORBIDDEN' });
+        if (!refreshTokens.includes(refreshToken)) {
+            throw new errors.HttpError('FORBIDDEN', 403);
         }
-        jwt.verify(refleshToken, REFRESH_TOKEN_SECRET, (err, user) => {
-            if( err ) {
-                return res.status(401).send({ message: 'UNAUTHORIZE' });
+        jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err, user) => {
+            if (err) {
+                throw new errors.UnauthorizedError('UNAUTHORIZE!');
             }
-            const accessToken = generateAccessToken(user);
-            return accessToken;
+            accessToken = generateAccessToken(user);
+            newRefreshToken = generateRefreshToken(user);
+            refreshTokens.push(newRefreshToken);
+            refreshTokens.splice(refreshToken);
         });
+        return {
+            accessToken: accessToken,
+            refreshToken: newRefreshToken
+        };
+
     },
-    logout: (token) => {
-        refleshTokens = refleshTokens.filter(t => t !== token);
+    logout: async (token) => {
+        refreshTokens = refreshTokens.filter(t => t !== token);
     }
 }
 

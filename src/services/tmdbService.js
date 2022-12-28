@@ -2,31 +2,71 @@ const axios = require('axios');
 const url = "https://api.themoviedb.org/3/movie/";
 const apiKeyParam = "?api_key=" + "ecbc2a7793eaedfd3c0693d04da45264";
 const langParam = "&language=tr-tr";
+const basicMovieRepository = require('../repositories/basicMovieRepository.js');
+const movieGenreRepository = require('../repositories/movieGenreRepository.js');
+const BasicMovie = require('../models/BasicMovie.js');
+const MovieGenre = require('../models/MovieGenre.js');
 
-let tmdbService ={
-    getMovie: async (id) =>{
-        let requestURL = url + id+ apiKeyParam + langParam;
-       var response = await axios.get(requestURL);
-       return response.data;
+let tmdbService = {
+    getMovie: async (id) => {
+        let requestURL = url + id + apiKeyParam + langParam;
+        let response = await axios.get(requestURL);
+        return response.data;
     },
-    getPopularMovies : async (page) => {
+    getPopularMovies: async (page) => {
         let pageParam = `&page=${page}`;
-        let requestURL = url + "popular" + apiKeyParam + langParam  + pageParam;
-       
-        // axios.get(requestURL).then(response => console.log(response))
-        // .catch(err => console.log(err));
-        var response = await axios.get(requestURL);
+        let requestURL = url + "popular" + apiKeyParam + langParam + pageParam;
+
+        let response = await axios.get(requestURL)
         return response.data;
     },
-    getRecommendationMovies : async (id) => {
+    getRecommendationMovies: async (id) => {
         let requestURL = url + id + "/recommendations" + apiKeyParam + langParam;
-        
-        var response = await axios.get(requestURL);
+
+        let response = await axios.get(requestURL);
         return response.data;
+    },
+    synchronizeMovie: async () => {
+        for (let i = 1; i < 500; i++) {
+            var response = await tmdbService.getPopularMovies(i);
+
+            let movieList = response.results;
+            for (let movie of movieList) {
+                let movieDb = await basicMovieRepository.getById(movie.id)
+                    .then(response => { return response.length > 0 ? response[0] : null; });
+                let basicMovie = new BasicMovie(movie);
+                if (movieDb == null) {
+                    await basicMovieRepository.create(basicMovie);
+                }
+                else {
+                    movieDb.Adult = basicMovie.Adult;
+                    movieDb.Backdrop_path = basicMovie.Backdrop_path;
+                    movieDb.Original_language = basicMovie.Original_language;
+                    movieDb.Original_title = basicMovie.Original_title;
+                    movieDb.Overview = basicMovie.Overview;
+                    movieDb.Popularity = basicMovie.Popularity;
+                    movieDb.Poster_path = basicMovie.Poster_path;
+                    movieDb.Release_date = basicMovie.Release_date;
+                    movieDb.Title = basicMovie.Title;
+                    movieDb.Video = basicMovie.Video;
+                    movieDb.Vote_average = basicMovie.Vote_average;
+                    movieDb.Vote_count = basicMovie.Vote_count;
+
+                    await basicMovieRepository.update(movieDb);
+                    await movieGenreRepository.removeByMovieId(movieDb.TmdbId);
+                }
+                for (let genre of movie.genre_ids) {
+                    const movieGenre = new MovieGenre(genre, basicMovie.TmdbId);
+                    await movieGenreRepository.create(movieGenre);
+
+                };
+            }
+        }
     }
 }
 
 // tmdbService.getMovie(436969);
-//   tmdbService.getPopularMovies(2);
+// tmdbService.getPopularMovies(2);
 
 module.exports = tmdbService;
+
