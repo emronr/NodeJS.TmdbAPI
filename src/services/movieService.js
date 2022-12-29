@@ -35,12 +35,12 @@ const movieService = {
 
         await Promise.all(topRatedMovies.map(async (movie) => {
             const recommendationMovies = await tmdbService.getRecommendationMovies(topRatedMovies[0].MovieId)
-            var data = recommendationMovies.results.sort((a, b) => {
+            let data = recommendationMovies.results.sort((a, b) => {
                 return (a.vote_average > b.vote_average) ? -1 : 1;
             }).slice(0, 6);
 
             await Promise.all(data.map(async (suggestedMovie) => {
-                var count = 0;
+                let count = 0;
                 if (!suggestedMovies.some((movie) => {
                     return movie.MovieId === suggestedMovie.id;
                 }) && count < 2) {

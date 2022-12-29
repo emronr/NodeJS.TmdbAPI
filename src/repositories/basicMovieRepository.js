@@ -1,7 +1,6 @@
 const { sql, poolPromise } = require('../database/dbContext');
 
-
-var basicMovieRepository = {
+const basicMovieRepository = {
     getAll: async () => {
         let query = 'select * from BasicMovies'
         return await poolPromise

@@ -1,6 +1,6 @@
 const users = require('../mocks/users.mock');
 const jwt = require('jsonwebtoken');
-var errors = require('restify-errors');
+const errors = require('restify-errors');
 
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = require('../environments/environment');
 

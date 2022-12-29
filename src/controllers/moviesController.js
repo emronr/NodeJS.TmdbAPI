@@ -3,7 +3,8 @@
 const movieService = require('../services/movieService');
 const tmdbService = require('../services/tmdbService');
 const ApiResponse = require('../models/ApiResponse');
-var moviesController = {
+
+const moviesController = {
     getMovies: async (req, res, next) => {
         await movieService.getAllPaging(req.query.size, req.query.currentPage)
             .then(response => res.status(201).send(new ApiResponse(response)))
