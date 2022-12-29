@@ -6,6 +6,7 @@ nconf
     .env()
     .file({ file: './config.json' });
 
+//TODO: fix this
 // const config = nconf.get('databaseConfig');
 const config = {
     user: "sa",
@@ -29,7 +30,7 @@ const poolPromise = new sql.ConnectionPool(config)
     .connect()
     .then(pool => {
         console.log("Connect to database....");
-        return pool; 
+        return pool;
     })
     .catch(err => {
         console.error("Database connection failed!. Bad config:", err);
