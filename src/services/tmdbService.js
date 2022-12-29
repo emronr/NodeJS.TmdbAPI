@@ -28,7 +28,7 @@ const tmdbService = {
     },
     synchronizeMovie: async () => {
         for (let i = 1; i < 500; i++) {
-            var response = await tmdbService.getPopularMovies(i);
+            let response = await tmdbService.getPopularMovies(i);
 
             let movieList = response.results;
             for (let movie of movieList) {
