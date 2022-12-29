@@ -1,28 +1,19 @@
 const nodemailer = require('nodemailer');
-const nconf = require('nconf');
+const config = require('config');
 
-nconf.argv().env();
+const emailConfig = config.get('emailConfig')
 
-nconf.file({ file: './config.json' });
-// const emailConfig = nconf.get('emailConfig');
-const emailConfig = {
-    service: "hotmail",
-    auth: {
-        user: "test.logan.9@hotmail.com",
-        pass: "160201070s"
-    }
-};
 const emailService = {
-    sendEmail: async ({email, subject, content}) => {
+    sendEmail: async ({ email, subject, content }) => {
         const transporter = createTransport();
         const mailOptions = {
-            from: emailConfig.auth.user,            
+            from: emailConfig.auth.user,
             to: email,
             subject: subject,
             html: content,
-            
+
         };
-        transporter.sendMail(mailOptions, (error, info) =>{
+        transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log(error);
             } else {
@@ -35,11 +26,11 @@ const emailService = {
 const createTransport = () => {
 
     return nodemailer.createTransport({
-        service : emailConfig.service,
+        service: emailConfig.service,
         auth: {
             user: emailConfig.auth.user,
             pass: emailConfig.auth.pass
-        } 
+        }
     });
 }
 

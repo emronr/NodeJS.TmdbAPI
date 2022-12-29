@@ -14,10 +14,14 @@
         "parseJSON": true
     },
     "emailConfig": {
-        "service":"hotmail",
+        "service": "hotmail",
         "auth": {
             "user": "test.logan.9@hotmail.com",
             "pass": "160201070s"
         }
+    },
+    "server":{
+        "host": "localhost",
+        "port": 3000 
     }
 }

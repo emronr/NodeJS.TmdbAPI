@@ -20,7 +20,6 @@ app.use(routes);
 const tmdbJob = require('./jobs/tmdbJob');
 tmdbJob.syncPopularMovie();
 
-
 // global error handler
 app.use(errorHandler);
 

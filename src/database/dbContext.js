@@ -1,32 +1,9 @@
 const sql = require('mssql');
-const nconf = require('nconf');
+const config = require('config');
 
-nconf
-    .argv()
-    .env()
-    .file({ file: './config.json' });
+const dbConfig = config.get('databaseConfig');
 
-//TODO: fix this
-// const config = nconf.get('databaseConfig');
-const config = {
-    user: "sa",
-    password: "123456",
-    database: "MovieLibrary",
-    server: "localhost",
-    port: 1433,
-    options: {
-        cryptoCredentialsDetails: {
-            minVersion: "TLSv1"
-        },
-        trustServerCertificate: true
-    },
-    parseJSON: true
-}
-
-// sql connection
-// console.log(config);
-
-const poolPromise = new sql.ConnectionPool(config)
+const poolPromise = new sql.ConnectionPool(dbConfig)
     .connect()
     .then(pool => {
         console.log("Connect to database....");

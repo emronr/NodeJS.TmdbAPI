@@ -1,4 +1,3 @@
-const { default: axios } = require('axios');
 const basicMovieRepository = require('../repositories/basicMovieRepository.js');
 const movieNoteRepository = require('../repositories/movieNoteRepository');
 const emailService = require('./emailService');
