@@ -1,4 +1,3 @@
-var baseRepository = require('./baseRepository');
 const { sql, poolPromise } = require('../database/dbContext');
 
 

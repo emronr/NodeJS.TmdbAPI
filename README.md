@@ -17,4 +17,3 @@ Yapılacaklar
 Add note için movie id validator
 session yönetimi ve token içindeki id kullanımı
 authService içinde res send ler throw exception
-repository'ler kaldırılıp dbContext'e service katmanı üzerinden bağlanılacak.
