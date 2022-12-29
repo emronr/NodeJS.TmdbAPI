@@ -7,7 +7,7 @@ const movieGenreRepository = require('../repositories/movieGenreRepository.js');
 const BasicMovie = require('../models/BasicMovie.js');
 const MovieGenre = require('../models/MovieGenre.js');
 
-let tmdbService = {
+const tmdbService = {
     getMovie: async (id) => {
         let requestURL = url + id + apiKeyParam + langParam;
         let response = await axios.get(requestURL);
