@@ -20,8 +20,15 @@
             "pass": "160201070s"
         }
     },
-    "server":{
+    "tmdbConfig": {
+        "apiUrl": "https://api.themoviedb.org/3/movie/",
+        "apiKey_key": "api_key",
+        "apiKey_value": "ecbc2a7793eaedfd3c0693d04da45264",
+        "lang_key": "language",
+        "lang_value": "tr-tr"
+    },
+    "server": {
         "host": "localhost",
-        "port": 3000 
+        "port": 3000
     }
 }

@@ -1,7 +1,11 @@
 const axios = require('axios');
-const url = "https://api.themoviedb.org/3/movie/";
-const apiKeyParam = "?api_key=" + "ecbc2a7793eaedfd3c0693d04da45264";
-const langParam = "&language=tr-tr";
+const config = require('config');
+
+const tmdbConfig = config.get('tmdbConfig');
+const url = tmdbConfig.apiUrl ;
+const apiKeyParam = tmdbConfig.apiKey_key + "=" + tmdbConfig.apiKey_value + "&";
+const langParam = tmdbConfig.lang_key + "=" + tmdbConfig.lang_value + "&";
+
 const basicMovieRepository = require('../repositories/basicMovieRepository.js');
 const movieGenreRepository = require('../repositories/movieGenreRepository.js');
 const BasicMovie = require('../models/BasicMovie.js');
@@ -9,7 +13,7 @@ const MovieGenre = require('../models/MovieGenre.js');
 
 const tmdbService = {
     getMovie: async (id) => {
-        let requestURL = url + id + apiKeyParam + langParam;
+        let requestURL = url + id + "?" + apiKeyParam + langParam;
         let response = await axios.get(requestURL);
         return response.data;
     },

@@ -10,8 +10,7 @@ router.get('/', (req, res) => res.send('TMDB API Version1'));
 
 // controllers path
 router.use('/auth', authRoute);
-// router.use('/api/v1/movies', authorize,  moviesRoute);
-router.use("/api/v1/movies", moviesRoute);
+router.use('/api/v1/movies', authorize,  moviesRoute);
 
 // health check
 router.get('/health', (req, res) => {
