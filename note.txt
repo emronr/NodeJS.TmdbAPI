@@ -1,9 +1,0 @@
-Multi-threading
-multi-tasking
-
-node.js neden single thread
-single thread içinde nasıl threadlar oluşuyor.
-
-
-
-ado.net connection mimari
